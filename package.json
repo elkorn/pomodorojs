@@ -1,0 +1,25 @@
+{
+  "name": "pomodorojs",
+  "version": "0.0.0",
+  "description": "Time tracking with the pomodoro technique.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "author": "elkorn",
+  "license": "ISC",
+  "dependencies": {
+    "libnotify": "^1.0.4",
+    "moment": "^2.6.0",
+    "state-machine": "0.0.3",
+    "timespan": "^2.3.0",
+    "zpad": "^0.5.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.6.2",
+    "gulp-grep-stream": "0.0.2",
+    "gulp-mocha": "^0.4.1",
+    "gulp-watch": "^0.6.5",
+    "should": "^3.3.2"
+  }
+}
