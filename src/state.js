@@ -1,27 +1,30 @@
 var fs = require("fs");
 var format = require("util").format;
-var statefile = "statefile";
+var statefile = require("path").resolve(__dirname, "../statefile");
 var timespan = require("timespan");
 var zpad = require("zpad");
 zpad.amount(2);
 
 function toMinuteDisplay(msec) {
+    if (isNaN(msec)) {
+        return "--:--";
+    }
+
     var d = new Date(msec);
     return format("%s:%s", zpad(d.getMinutes()), zpad(d.getSeconds()));
 }
 
 function unmarshalState(state) {
     var data = state.split("|");
-    console.log(data);
     return {
-        state: data[0],
-        number: parseInt(data[1]),
-        timeLeft: data[2]
+        state: data[0] || "pomodoro",
+        number: parseInt(data[1]) || 0,
+        timeLeft: data[2] || ""
     };
 }
 
 function marshalState(state) {
-    return format("%s|%s|%s", state.state, state.number, state.timeLeft ? toMinuteDisplay(state.timeLeft) : "");
+    return format("%s|%s|%s", state.state, state.number, toMinuteDisplay(state.timeLeft || 0));
 }
 
 module.exports = {
@@ -29,18 +32,17 @@ module.exports = {
         var state = fs.readFileSync(statefile, {
             encoding: 'utf8'
         });
+
         if (state.length) {
             var stateInfo = unmarshalState(state);
             fs.writeFileSync(statefile, marshalState({
                 state: stateInfo.state,
-                number: stateInfo.number + 1,
-                timeLeft: stateInfo.timeLeft
+                number: stateInfo.number + 1
             }));
         } else {
             fs.writeFileSync(statefile, marshalState({
                 state: "pomodoro",
-                number: 1,
-                timeLeft: 0
+                number: 1
             }));
         }
     },
@@ -56,5 +58,32 @@ module.exports = {
             number: stateInfo.number,
             timeLeft: msecs
         }));
+    },
+
+    zeroTime: function() {
+        var state = fs.readFileSync(statefile, {
+            encoding: 'utf8'
+        });
+
+        var stateInfo = unmarshalState(state);
+        fs.writeFileSync(statefile, marshalState({
+            state: stateInfo.state,
+            number: stateInfo.number,
+            timeLeft: 0
+        }));
+    },
+
+    resetTime: function() {
+        var state = fs.readFileSync(statefile, {
+            encoding: 'utf8'
+        });
+
+        var stateInfo = unmarshalState(state);
+        fs.writeFileSync(statefile, marshalState({
+            state: stateInfo.state,
+            number: stateInfo.number,
+            timeLeft: "--"
+        }));
     }
+
 };
