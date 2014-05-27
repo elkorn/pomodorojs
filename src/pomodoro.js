@@ -10,9 +10,9 @@ util.inherits(TimeUp, ee);
 var timeUp = new TimeUp();
 
 var durations = {
-    "pomodoro": timespan.fromMinutes(25).msecs,
-    "break": timespan.fromMinutes(5).msecs,
-    "bigBreak": timespan.fromMinutes(15).msecs
+    "pomodoro": timespan.fromSeconds(5).msecs,
+    "break": timespan.fromSeconds(5).msecs,
+    "bigBreak": timespan.fromSeconds(5).msecs
 };
 
 var sm = require("state-machine");
@@ -50,16 +50,12 @@ function PomodoroJS(options) {
         this.state("break", {
             initial: true,
             enter: function() {
-                self.emit("pomodoroFinish");
-                options.onPomodoroFinish();
                 currentTime = durations["break"];
                 startTimer();
             }
         })
             .state("bigBreak", {
                 enter: function() {
-                    self.emit("pomodoroFinish");
-                    options.onPomodoroFinish();
                     currentTime = durations.bigBreak;
                     startTimer();
                 }
@@ -72,9 +68,11 @@ function PomodoroJS(options) {
                     startTimer();
                 }
             })
-            .event("startPomodoro", ["break", "bigBreak"], "pomodoro")
-            .event("goForABreak", "pomodoro", "break")
-            .event("goForABigBreak", "pomodoro", "bigBreak");
+            .state("paused")
+            .event("startPomodoro", ["break", "bigBreak"], "pomodoro")    
+            .event("goForABreak", "paused", "break")
+            .event("goForABigBreak", "paused", "bigBreak")
+            .event("pause", "pomodoro", "paused");
     });
 
     options.onPomodoroStart = options.onPomodoroStart || noop;
@@ -84,12 +82,10 @@ function PomodoroJS(options) {
 
     timeUp.on("timeUp", function() {
         if (pomodoroStates.currentState() === "pomodoro") {
-            if (++pomodorosSoFar % 4 === 0) {
-                pomodoroStates.goForABigBreak();
-                pomodorosSoFar %= 4;
-            } else {
-                pomodoroStates.goForABreak();
-            }
+            pomodoroStates.pause();
+            ++pomodorosSoFar;
+            self.emit("pomodoroFinish");
+            options.onPomodoroFinish();
         } else {
             pomodoroStates.startPomodoro();
         }
@@ -102,6 +98,15 @@ function PomodoroJS(options) {
 
     this.currentState = function() {
         return pomodoroStates.currentState();
+    };
+
+    this.continue = function () {
+        if (pomodorosSoFar % 4 === 0) {
+            pomodoroStates.goForABigBreak();
+            pomodorosSoFar %= 4;
+        } else {
+            pomodoroStates.goForABreak();
+        }
     };
 }
 

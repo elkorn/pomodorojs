@@ -8,6 +8,7 @@ var paths = {
 };
 
 gulp.task("default", function() {
+    "use strict";
     gulp.src(paths.scripts)
         .pipe(mocha({
             reporter: "dot"

@@ -6,9 +6,21 @@ var pr = require("./src/purple-remote");
 var notifier = require("./src/notifier");
 var format = require("util").format;
 var sound = require("./src/sound");
+var stats = require("./src/stats");
+
+process.title= "PomodoroJS";
 
 state.resetTime();
 var t = new PomodoroJS();
+var shouldBeWaiting = false;
+
+
+function wait() {
+    if(shouldBeWaiting) {
+        setTimeout(wait, 100);
+        console.log("Wating...");
+    }
+}
 
 t.on("pomodoroTick", function(data) {
     state.recordTime(data.time);
@@ -34,6 +46,13 @@ t.on("pomodoroFinish", function() {
         message: ""
     });
     sound.play();
+    console.log("getting tags...");
+    stats.getTagsForPomodoro(function(){
+        shouldBeWaiting = false;
+        t.continue();
+    });
+
+    wait();
 });
 
 t.start();
