@@ -10,9 +10,9 @@ util.inherits(TimeUp, ee);
 var timeUp = new TimeUp();
 
 var durations = {
-    "pomodoro": timespan.fromSeconds(5).msecs,
-    "break": timespan.fromSeconds(5).msecs,
-    "bigBreak": timespan.fromSeconds(5).msecs
+    "pomodoro": timespan.fromMinutes(25).msecs,
+    "break": timespan.fromMinutes(5).msecs,
+    "bigBreak": timespan.fromMinutes(15).msecs
 };
 
 var sm = require("state-machine");
