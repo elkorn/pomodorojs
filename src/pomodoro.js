@@ -10,9 +10,9 @@ util.inherits(TimeUp, ee);
 var timeUp = new TimeUp();
 
 var durations = {
-    "pomodoro": timespan.fromSeconds(5).msecs,
-    "break": timespan.fromSeconds(5).msecs,
-    "bigBreak": timespan.fromSeconds(15).msecs
+    "pomodoro": timespan.fromMinutes(25).msecs,
+    "break": timespan.fromMinutes(5).msecs,
+    "bigBreak": timespan.fromMinutes(15).msecs
 };
 
 var sm = require("state-machine");
@@ -21,7 +21,7 @@ function noop() {}
 
 function PomodoroJS(options) {
     var self = this;
-    var howManyPomodoros = 0;
+    var pomodorosSoFar = 0;
     var currentTime;
     var timeout;
 
@@ -84,9 +84,9 @@ function PomodoroJS(options) {
 
     timeUp.on("timeUp", function() {
         if (pomodoroStates.currentState() === "pomodoro") {
-            howManyPomodoros += 1;
-            if (howManyPomodoros % 4 === 0) {
+            if (++pomodorosSoFar % 4 === 0) {
                 pomodoroStates.goForABigBreak();
+                pomodorosSoFar %= 4;
             } else {
                 pomodoroStates.goForABreak();
             }
@@ -98,6 +98,10 @@ function PomodoroJS(options) {
     pomodoroStates.onChange = options.onStateChange;
     this.start = function() {
         pomodoroStates.startPomodoro();
+    };
+
+    this.currentState = function() {
+        return pomodoroStates.currentState();
     };
 }
 

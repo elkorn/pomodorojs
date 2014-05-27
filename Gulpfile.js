@@ -16,18 +16,4 @@ gulp.task("default", function() {
                 console.log(err.stack);
             }
         });
-    // .pipe(watch({
-    //     emit: 'all'
-    // }, function(files) {
-    //     files
-    //         .pipe(grep('test/**/*.js'))
-    //         .pipe(mocha({
-    //             reporter: "dot"
-    //         }))
-    //         .on('error', function() {
-    //             if (!/tests? failed/.test(err.stack)) {
-    //                 console.log(err.stack);
-    //             }
-    //         });
-    // }));
 });
