@@ -108,6 +108,10 @@ function PomodoroJS(options) {
             pomodoroStates.goForABreak();
         }
     };
+
+    this.shouldGoForALongBreak = function () {
+        return pomodorosSoFar % 4 === 0;
+    };
 }
 
 util.inherits(PomodoroJS, ee);

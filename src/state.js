@@ -5,6 +5,10 @@ var timespan = require("timespan");
 var zpad = require("zpad");
 zpad.amount(2);
 
+if (!fs.existsSync(statefile)) {
+    fs.writeFileSync(statefile);
+}
+
 function toMinuteDisplay(msec) {
     if (isNaN(msec)) {
         return "--:--";

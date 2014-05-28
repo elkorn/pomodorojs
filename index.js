@@ -8,17 +8,18 @@ var format = require("util").format;
 var sound = require("./src/sound");
 var stats = require("./src/stats");
 
-process.title= "PomodoroJS";
+process.title = "PomodoroJS";
 
 state.resetTime();
 var t = new PomodoroJS();
 var shouldBeWaiting = false;
-
+var timeout;
 
 function wait() {
-    if(shouldBeWaiting) {
-        setTimeout(wait, 100);
-        console.log("Wating...");
+    if (shouldBeWaiting) {
+        timeout = setTimeout(wait, 100);
+    } else {
+        clearTimeout(timeout);
     }
 }
 
@@ -40,16 +41,16 @@ t.on("pomodoroFinish", function() {
     notifier.notify(
         format(
             "Finished! Have a %sbreak!",
-            t.currentState() === "bigBreak" ? "long " : ""));
+            t.shouldGoForALongBreak() ? "long " : ""));
     pr.changeStatus({
         status: "available",
         message: ""
     });
     sound.play();
-    console.log("getting tags...");
-    stats.getTagsForPomodoro(function(){
+    stats.getTagsForPomodoro(function() {
         shouldBeWaiting = false;
-        t.continue();
+        t.
+        continue ();
     });
 
     wait();

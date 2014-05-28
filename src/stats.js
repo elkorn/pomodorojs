@@ -8,6 +8,14 @@ var tempfile  = path.resolve(__dirname, "../.tempfile");
 var DATA_FORMAT = "%s\t%s\n";
 var INPUT_BOX_PARAMS = ["-e", format("dialog --inputbox \"Tags for pomodoro:\" 8 40 2> %s", tempfile)];
 
+if (!fs.existsSync(statsfile)) {
+    fs.writeFileSync(statsfile);
+}
+
+if (!fs.existsSync(tempfile)) {
+    fs.writeFileSync(tempfile);
+}
+
 function makeData(tags) {
     return format(DATA_FORMAT, new Date(), tags);
 }
