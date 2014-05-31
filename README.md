@@ -8,7 +8,7 @@ Also, keeping in mind the fact that there is some actual work to be done, I deci
 Features
 ---
 
-They are mainly things I actually previously coded up using Bash (:heart:) while using [tomato.es](http://tomato.es/) (:heart::heart::heart: the best one out there) are:
+They are mainly things I actually previously coded up using Bash (:heart:) while using [tomato.es](http://tomato.es/) (:heart::heart::heart: the best one out there):
 - having access to the current pomdoro/break state (how much time is left),
 - playing sounds on starting/finishing a pomodoro,
 - displaying simple notifications on starting/finishing a pomodoro (mainly so that I can easily discern whether I deserve an 05:00 or a 15:00),
