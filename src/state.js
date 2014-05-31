@@ -1,7 +1,6 @@
 var fs = require("fs");
 var format = require("util").format;
 var statefile = require("path").resolve(__dirname, "../statefile");
-var timespan = require("timespan");
 var zpad = require("zpad");
 zpad.amount(2);
 

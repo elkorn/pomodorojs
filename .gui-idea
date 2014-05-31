@@ -1,0 +1,3 @@
+- Each pomodoro is a block within a calendar-like timetable.
+- Each found tag has to have assigned a color.
+- Colors are being mixed for a pomodoro based on which tags it has.

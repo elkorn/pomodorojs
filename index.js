@@ -1,68 +1,43 @@
 #!/usr/bin/node
 
-var PomodoroJS = require("./src/pomodoro.js");
-var state = require("./src/state");
-var pr = require("./src/purple-remote");
-var notifier = require("./src/notifier");
-var format = require("util").format;
-var sound = require("./src/sound");
+var app = require("./src/main");
+var args = require("minimist")(process.argv.slice(2));
 var stats = require("./src/stats");
+var timespan = require("timespan");
+var noArgs = Object.keys(args).length === 1;   // Only the `_` arg is present.
 
 process.title = "PomodoroJS";
 
-state.resetTime();
-var t = new PomodoroJS();
-var shouldBeWaiting = false;
-var timeout;
+console.log(args.tags);
 
-function wait() {
-    if (shouldBeWaiting) {
-        timeout = setTimeout(wait, 100);
-    } else {
-        clearTimeout(timeout);
-    }
+function showPomodorosForDate(date) {
+    showPomodorosForCriteria({
+        date: date
+    });
 }
 
-t.on("pomodoroTick", function(data) {
-    state.recordTime(data.time);
-});
+function showPomodorosForCriteria(criteria) {
+    criteria.onlyCount = args.n || args.numberOnly || false;
+    criteria.tags = (args.tags || "").split(",");
+    console.log(stats.getPomodoros(criteria));
+}
 
-t.on("pomodoroStart", function() {
-    notifier.notify("Get to work!");
-    pr.changeStatus({
-        status: "unavailable",
-        message: "Pomodoro"
-    });
-    sound.play();
-});
+if (noArgs) {
+    app.start();
+} else {
+    var criteria = {};
+    if (args.today) {
+        criteria.date = new Date();
+    }
 
-t.on("pomodoroFinish", function() {
-    state.recordPomodoro();
-    notifier.notify(
-        format(
-            "Finished! Have a %sbreak!",
-            t.shouldGoForALongBreak() ? "long " : ""));
-    pr.changeStatus({
-        status: "available",
-        message: ""
-    });
-    sound.play();
-    stats.getTagsForPomodoro(function() {
-        shouldBeWaiting = false;
-        t.
-        continue ();
-    });
+    var time = args.t || args.time;
+    if (time) {
+        if(time === true) {
+            criteria.date = new Date();
+        } else if (!isNaN(time)) {
+            criteria.date = new Date(new Date().valueOf() + timespan.fromDays(time).msecs);
+        }
+    }
 
-    wait();
-});
-
-t.start();
-
-process.on("SIGINT", function() {
-    pr.changeStatus({
-        status: "available",
-        message: ""
-    });
-    state.resetTime();
-    process.exit(0);
-});
+    showPomodorosForCriteria(criteria);
+}
