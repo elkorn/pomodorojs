@@ -66,7 +66,9 @@ Command line arguments
 ```
 (no args)           Start pomodoroing.
 -t, -today          Display pomodoros done today.
---t=N, --time=N     Display pomodoros done N days from now. Sensible values: N<=0 e.g. N=0 - today, N=-1 - yesterday.
+--t=N, --time=N     Display pomodoros done N days from now. Sensible values are N<=0 e.g.
+                    --t=0 - today, 
+                    --t=-1 - yesterday.
 --tags=a,b,c...     Only show pomodoros having any of the specified tags.
 -n,-numberonly      Only show the number of pomodoros.
 ```
