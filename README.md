@@ -1,6 +1,8 @@
 pomodorojs
 ===
 
+Track your pomodoros from the command line, witout any hassle.
+
 Well, I got fed up with all the solutions available publicly.
 What I needed was a command line app that does not get in my way.
 Also, keeping in mind the fact that there is some actual work to be done, I decided to keep it as lean as possible, without any gold-plating or excess.
