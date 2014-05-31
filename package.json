@@ -1,6 +1,6 @@
 {
   "name": "pomodorojs",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Hassle-free time tracking with the pomodoro technique.",
   "main": "index.js",
   "author": "elkorn",
