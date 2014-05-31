@@ -8,10 +8,10 @@ Also, keeping in mind the fact that there is some actual work to be done, I deci
 Features
 ---
 
-The only things that I actually coded up using bash while using [tomato.es](http://tomato.es/) (which is awesome and probably fits your taste better than this) are:
+They are mainly things I actually previously coded up using Bash (:heart:) while using [tomato.es](http://tomato.es/) (:heart::heart::heart: the best one out there) are:
 - having access to the current pomdoro/break state (how much time is left),
 - playing sounds on starting/finishing a pomodoro,
-- displaying simple notifications on starting/finishing a pomodoro (mainly so that I can easily know  whether I deserve an 05:00 or a 15:00),
+- displaying simple notifications on starting/finishing a pomodoro (mainly so that I can easily discern whether I deserve an 05:00 or a 15:00),
 - changing my availability on Pidgin so that nobody bothers me while I should be very vey busy,
 - tagging (this is an absolutely *awesome* feature of [tomato.es](http://tomato.es/) which I fell in love with after some time).
 

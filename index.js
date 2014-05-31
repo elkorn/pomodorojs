@@ -6,7 +6,7 @@ var stats = require("./src/stats");
 var timespan = require("timespan");
 var noArgs = Object.keys(args).length === 1;   // Only the `_` arg is present.
 
-process.title = "PomodoroJS";
+process.title = "pomodorojs";
 
 function showPomodorosForDate(date) {
     showPomodorosForCriteria({
