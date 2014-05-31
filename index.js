@@ -8,8 +8,6 @@ var noArgs = Object.keys(args).length === 1;   // Only the `_` arg is present.
 
 process.title = "PomodoroJS";
 
-console.log(args.tags);
-
 function showPomodorosForDate(date) {
     showPomodorosForCriteria({
         date: date
