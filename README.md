@@ -79,3 +79,8 @@ todo
 
 It works and is stable (I'm using it practically everyday), but is totally unpolished.
 All the stuff that I'm planning to do to it (sooner or later) is in the [issues](https://github.com/elkorn/pomodorojs/issues).
+
+Acknowledgements
+---
+
+Thank You [suonho](https://www.freesound.org/people/suonho/) for the [incredible laser sound](https://www.freesound.org/people/suonho/sounds/27568/) ! :smile:
