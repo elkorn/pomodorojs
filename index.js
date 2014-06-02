@@ -20,7 +20,23 @@ function showPomodorosForCriteria(criteria) {
     console.log(stats.getPomodoros(criteria));
 }
 
-var SUPPORTED_ARGS = ["a", "all", "today", "time", "n", "numberOnly", "tags"];
+function printUsageInfo() {
+    console.log(
+        "\n" +
+        "       (no args)           Start pomodoroing.\n" +
+        "       -a, -all            Show all pomodoros ever recorded.\n" +
+        "       -h, -help           Print usage information.\n" +
+        "       -n,-numberonly      Only show the number of pomodoros.\n" +
+        "       -t, -today          Display pomodoros done today.\n" +
+        "       --t=N, --time=N     Display pomodoros done N days from now. Sensible values are N<=0 e.g.\n" +
+        "                           --t=0 - today,\n" +
+        "                           --t=-1 - yesterday.\n" +
+        "       --tags=a,b,c...     Only show pomodoros having any of the specified tags." +
+        "\n"
+    );
+}
+
+var SUPPORTED_ARGS = ["a", "all", "today", "time", "n", "numberOnly", "tags", "h", "help"];
 
 if (noArgs) {
     app.start();
@@ -28,6 +44,11 @@ if (noArgs) {
     var criteria = {};
     if (args.a || args.all) {
         showPomodorosForCriteria(criteria);
+        return;
+    }
+
+    if(args.h || args.help) {
+        printUsageInfo();
         return;
     }
 
