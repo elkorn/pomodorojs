@@ -21,10 +21,7 @@ function wait() {
 }
 
 function exitGracefully() {
-    pr.changeStatus({
-        status: "available",
-        message: ""
-    });
+    pr.restoreStatus();
     state.resetTime();
     process.exit(0);
 }
@@ -53,10 +50,7 @@ exports.start = function() {
             format(
                 "Finished! Have a %sbreak!",
                 t.shouldGoForALongBreak() ? "long " : ""));
-        pr.changeStatus({
-            status: "available",
-            message: ""
-        });
+        pr.restoreStatus();
         sound.play();
         stats.getTagsForPomodoro(function() {
             shouldBeWaiting = false;
