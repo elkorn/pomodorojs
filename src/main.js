@@ -5,6 +5,7 @@ var notifier = require("./notifier");
 var format = require("util").format;
 var sound = require("./sound");
 var stats = require("./stats");
+var signals = require("./signals");
 
 state.resetTime();
 var t = new PomodoroJS();
@@ -19,7 +20,20 @@ function wait() {
     }
 }
 
+function exitGracefully() {
+    pr.changeStatus({
+        status: "available",
+        message: ""
+    });
+    state.resetTime();
+    process.exit(0);
+}
+
+signals.onInterrupt(exitGracefully);
+signals.onTerminate(exitGracefully);
+
 exports.start = function() {
+
     t.on("pomodoroTick", function(data) {
         state.recordTime(data.time);
     });
@@ -47,7 +61,7 @@ exports.start = function() {
         stats.getTagsForPomodoro(function() {
             shouldBeWaiting = false;
             t.
-            continue ();
+            continue();
         });
 
         wait();
@@ -55,12 +69,4 @@ exports.start = function() {
 
     t.start();
 
-    process.on("SIGINT", function() {
-        pr.changeStatus({
-            status: "available",
-            message: ""
-        });
-        state.resetTime();
-        process.exit(0);
-    });
 };
