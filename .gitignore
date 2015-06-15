@@ -3,4 +3,5 @@ node_modules
 statsfile
 statefile
 .tempfile
+.tern-port
 *.bak
