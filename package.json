@@ -17,7 +17,9 @@
     "mocha": "^2.2.5",
     "npm-bump": "0.0.13",
     "run-sequence": "^1.1.0",
-    "should": "^3.3.2"
+    "should": "^3.3.2",
+    "sinon": "^1.15.3",
+    "thunkify": "^2.1.2"
   },
   "scripts": {
     "test": "mocha --compilers js:babel/register",
