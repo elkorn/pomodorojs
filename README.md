@@ -1,5 +1,6 @@
 pomodorojs
 ===
+[![Build Status](https://drone.io/github.com/elkorn/pomodorojs/status.png)](https://drone.io/github.com/elkorn/pomodorojs/latest)
 
 Track your pomodoros from the command line, witout any hassle.
 
