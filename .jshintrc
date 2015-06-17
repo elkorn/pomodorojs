@@ -1,12 +1,11 @@
 {
-    "passfail"      : false,  // Stop on first error.
     "node"          : true,
     "esnext"        : true,   
     "globalstrict"  : true,  // Allow global "use strict" (also enables 'strict').
     "mocha"         : true,
     "jasmine"       : true,
     "quotmark"      : "single",
-    "globals"       : { "require": true } 
+    "globals"       : { "require": true },
 
     "asi"           : false,  // Tolerate Automatic Semicolon Insertion (no semicolons).
     "laxbreak"      : false,   // Tolerate unsafe line breaks e.g. `return [\n] x` without semicolons.
