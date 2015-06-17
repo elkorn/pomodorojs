@@ -10,8 +10,7 @@ describe('Run', () => {
     let delayReturn = (arr, callback) => {
       for (let val of arr) {
         setTimeout(() => {
-          console.log("calling to", callback.toString());
-          callback(null, val)
+          callback(null, val);
         }, randomTime());
       }
     };
@@ -23,7 +22,6 @@ describe('Run', () => {
 
     run(function * () {
       let result = yield th(arr);
-      console.log(result);
       arr.indexOf(result).should.not.equal(-1);
       done();
     });

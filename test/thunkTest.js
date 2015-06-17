@@ -1,6 +1,5 @@
 'use strict';
 
-
 import thunk from '../src/util/thunk';
 
 describe('Thunk', ()=>{
