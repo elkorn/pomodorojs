@@ -5,7 +5,6 @@ import events from '../util/pick-for-events';
 
 class Plugin {
   constructor(handlers) {
-    console.log(events.pick);
     this.handlers = events.pick(handlers);
   }
 

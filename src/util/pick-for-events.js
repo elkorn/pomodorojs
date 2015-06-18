@@ -3,8 +3,6 @@
 import pomodoro from '../pomodoro';
 import R from 'ramda';
 
-let log = (e) => console.log(e);
-
 module.exports = {
   pick: R.partial(
     R.pick,
