@@ -1,12 +1,14 @@
-var spawn = require("child_process").spawn;
-var fs = require("fs");
-var format = require("util").format;
-var path = require("path");
-var statsfile = path.resolve(__dirname, "../statsfile");
-var tempfile = path.resolve(__dirname, "../.tempfile");
+'use strict';
 
-var DATA_FORMAT = "%s\t%s\n";
-var INPUT_BOX_PARAMS = ["-e", format("dialog --inputbox \"Tags for pomodoro:\" 8 40 2> %s", tempfile)];
+var spawn = require('child_process').spawn;
+var fs = require('fs');
+var format = require('util').format;
+var path = require('path');
+var statsfile = path.resolve(__dirname, '../statsfile');
+var tempfile = path.resolve(__dirname, '../.tempfile');
+
+var DATA_FORMAT = '%s\t%s\n';
+var INPUT_BOX_PARAMS = ['-e', format('dialog --inputbox \'Tags for pomodoro:\' 8 40 2> %s', tempfile)];
 
 if (!fs.existsSync(statsfile)) {
   fs.writeFileSync(statsfile);
@@ -22,7 +24,7 @@ function makeData(tags) {
 
 function getTempData() {
   return fs.readFileSync(tempfile, {
-    encoding: "utf-8"
+    encoding: 'utf-8'
   });
 }
 
@@ -32,9 +34,9 @@ function getStats() {
   }
 
   return fs.readFileSync(statsfile, {
-    encoding: "utf-8"
+    encoding: 'utf-8'
   })
-    .split("\n");
+    .split('\n');
 }
 
 function storeTagInfo(tags) {
@@ -42,8 +44,8 @@ function storeTagInfo(tags) {
 }
 
 function showTagDialog(dataCallback) {
-  var dialog = spawn("xterm", INPUT_BOX_PARAMS);
-  dialog.on("close", function(data) {
+  var dialog = spawn('xterm', INPUT_BOX_PARAMS);
+  dialog.on('close', function(data) {
     dataCallback(getTempData());
   });
 }
@@ -72,6 +74,6 @@ module.exports = {
       });
     }
 
-    return options.onlyCount ? result.length : result.join("\n");
+    return options.onlyCount ? result.length : result.join('\n');
   }
 };

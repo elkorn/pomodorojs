@@ -1,7 +1,9 @@
-var fs = require("fs");
-var format = require("util").format;
-var statefile = require("path").resolve(__dirname, "../statefile");
-var zpad = require("zpad");
+'use strict';
+
+var fs = require('fs');
+var format = require('util').format;
+var statefile = require('path').resolve(__dirname, '../statefile');
+var zpad = require('zpad');
 zpad.amount(2);
 
 if (!fs.existsSync(statefile)) {
@@ -10,24 +12,24 @@ if (!fs.existsSync(statefile)) {
 
 function toMinuteDisplay(msec) {
   if (isNaN(msec)) {
-    return "--:--";
+    return '--:--';
   }
 
   var d = new Date(msec);
-  return format("%s:%s", zpad(d.getMinutes()), zpad(d.getSeconds()));
+  return format('%s:%s', zpad(d.getMinutes()), zpad(d.getSeconds()));
 }
 
 function unmarshalState(state) {
-  var data = state.split("|");
+  var data = state.split('|');
   return {
-    state: data[0] || "pomodoro",
+    state: data[0] || 'pomodoro',
     number: parseInt(data[1]) || 0,
-    timeLeft: data[2] || ""
+    timeLeft: data[2] || ''
   };
 }
 
 function marshalState(state) {
-  return format("%s|%s|%s", state.state, state.number, toMinuteDisplay(state.timeLeft || 0));
+  return format('%s|%s|%s', state.state, state.number, toMinuteDisplay(state.timeLeft || 0));
 }
 
 module.exports = {
@@ -44,7 +46,7 @@ module.exports = {
       }));
     } else {
       fs.writeFileSync(statefile, marshalState({
-        state: "pomodoro",
+        state: 'pomodoro',
         number: 1
       }));
     }
@@ -85,7 +87,7 @@ module.exports = {
     fs.writeFileSync(statefile, marshalState({
       state: stateInfo.state,
       number: stateInfo.number,
-      timeLeft: "--"
+      timeLeft: '--'
     }));
   }
 
