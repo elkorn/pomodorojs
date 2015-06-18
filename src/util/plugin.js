@@ -1,25 +1,18 @@
 'use strict';
 
 import R from 'ramda';
-
-let POMODORO_EVENTS = [
-  'pomodoroStart',
-  'pomodoroFinish',
-  'pomodoroTick'
-];
+import events from '../util/pick-for-events';
 
 class Plugin {
   constructor(handlers) {
-    this.handlers = R.pick(
-      POMODORO_EVENTS,
-      handlers);
+    console.log(events.pick);
+    this.handlers = events.pick(handlers);
   }
 
   apply(pomodorojs) {
-    POMODORO_EVENTS.forEach((e) => {
+    events.forEach((e) => {
       pomodorojs.on(e, this.handlers[e]);
     });
-
     return pomodorojs;
   }
 }

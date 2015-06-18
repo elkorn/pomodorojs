@@ -5,6 +5,8 @@ import sinon from 'sinon';
 import EventEmitter from 'events';
 import util from 'util';
 
+import events from 'events';
+
 describe('Plugin', () => {
   it('SHOULD accept handlers for Pomodoro events', () => {
     let handlers = {
@@ -23,7 +25,6 @@ describe('Plugin', () => {
   });
 
   it('SHOULD attach handlers to correct events', () => {
-
     let handlers = {
       pomodoroStart: sinon.spy(),
       pomodoroFinish: sinon.spy(),

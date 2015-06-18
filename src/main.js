@@ -1,11 +1,14 @@
-var PomodoroJS = require("./pomodoro.js");
-var state = require("./state");
-var pr = require("./purple-remote");
-var notifier = require("./notifier");
-var format = require("util").format;
-var sound = require("./sound");
-var stats = require("./stats");
-var signals = require("./signals");
+'use strict';
+
+import PomodoroJS from './pomodoro';
+
+var state = require('./state');
+var pr = require('./purple-remote');
+var notifier = require('./notifier');
+var format = require('util').format;
+var sound = require('./sound');
+var stats = require('./stats');
+var signals = require('./signals');
 
 state.resetTime();
 var t = new PomodoroJS();
@@ -31,25 +34,25 @@ signals.onTerminate(exitGracefully);
 
 exports.start = function() {
 
-  t.on("pomodoroTick", function(data) {
+  t.on('pomodoroTick', function(data) {
     state.recordTime(data.time);
   });
 
-  t.on("pomodoroStart", function() {
-    notifier.notify("Get to work!");
+  t.on('pomodoroStart', function() {
+    notifier.notify('Get to work!');
     pr.changeStatus({
-      status: "unavailable",
-      message: "Pomodoro"
+      status: 'unavailable',
+      message: 'Pomodoro'
     });
     sound.play();
   });
 
-  t.on("pomodoroFinish", function() {
+  t.on('pomodoroFinish', function() {
     state.recordPomodoro();
     notifier.notify(
       format(
-        "Finished! Have a %sbreak!",
-        t.shouldGoForALongBreak() ? "long " : ""));
+        'Finished! Have a %sbreak!',
+        t.shouldGoForALongBreak() ? 'long ' : ''));
     pr.restoreStatus();
     sound.play();
     stats.getTagsForPomodoro(function() {

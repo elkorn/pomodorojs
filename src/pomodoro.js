@@ -1,41 +1,48 @@
-var timespan = require("timespan");
-var aSecond = timespan.fromSeconds(1).msecs;
-var ee = require("events").EventEmitter;
-var util = require("util");
+'use strict';
+
+let timespan = require('timespan');
+let aSecond = timespan.fromSeconds(1).msecs;
+let ee = require('events').EventEmitter;
+let util = require('util');
+
+let POMODORO_EVENTS = [
+  'pomodoroStart',
+  'pomodoroFinish',
+  'pomodoroTick'
+];
 
 function TimeUp() {}
 
 util.inherits(TimeUp, ee);
 
-var timeUp = new TimeUp();
+let timeUp = new TimeUp();
 
 // TODO customizable.
-var durations = {
-  "pomodoro": timespan.fromMinutes(25).msecs,
-  "break": timespan.fromMinutes(5).msecs,
-  "bigBreak": timespan.fromMinutes(15).msecs
+let durations = {
+  'pomodoro': timespan.fromMinutes(25).msecs,
+  'break': timespan.fromMinutes(5).msecs,
+  'bigBreak': timespan.fromMinutes(15).msecs
 };
 
-var sm = require("state-machine");
+let sm = require('state-machine');
 
 function noop() {}
 
-function PomodoroJS(options) {
-  var self = this;
+function PomodoroJS() {
+  let self = this;
   var pomodorosSoFar = 0;
   var currentTime;
   var timeout;
 
   function progressTime() {
     if (currentTime === 0) {
-      timeUp.emit("timeUp");
+      timeUp.emit('timeUp');
     } else {
       currentTime -= aSecond;
-      self.emit("pomodoroTick", {
+      self.emit('pomodoroTick', {
         time: currentTime
       });
 
-      options.onPomodoroTick(currentTime);
       timeout = setTimeout(progressTime, aSecond);
     }
   }
@@ -45,54 +52,44 @@ function PomodoroJS(options) {
     progressTime();
   }
 
-  options = options || {};
-
-  var pomodoroStates = sm(function() {
-    this.state("break", {
+  let pomodoroStates = sm(function() {
+    this.state('break', {
       initial: true,
       enter: function() {
-        currentTime = durations["break"];
+        currentTime = durations['break'];
         startTimer();
       }
     })
-      .state("bigBreak", {
+      .state('bigBreak', {
         enter: function() {
           currentTime = durations.bigBreak;
           startTimer();
         }
       })
-      .state("pomodoro", {
+      .state('pomodoro', {
         enter: function() {
-          self.emit("pomodoroStart");
-          options.onPomodoroStart();
+          self.emit('pomodoroStart');
           currentTime = durations.pomodoro;
           startTimer();
         }
       })
-      .state("paused")
-      .event("startPomodoro", ["break", "bigBreak"], "pomodoro")
-      .event("goForABreak", "paused", "break")
-      .event("goForABigBreak", "paused", "bigBreak")
-      .event("pause", "pomodoro", "paused");
+      .state('paused')
+      .event('startPomodoro', ['break', 'bigBreak'], 'pomodoro')
+      .event('goForABreak', 'paused', 'break')
+      .event('goForABigBreak', 'paused', 'bigBreak')
+      .event('pause', 'pomodoro', 'paused');
   });
 
-  options.onPomodoroStart = options.onPomodoroStart || noop;
-  options.onPomodoroFinish = options.onPomodoroFinish || noop;
-  options.onPomodoroTick = options.onPomodoroTick || noop;
-  options.onStateChange = options.onStateChange || noop;
-
-  timeUp.on("timeUp", function() {
-    if (pomodoroStates.currentState() === "pomodoro") {
+  timeUp.on('timeUp', function() {
+    if (pomodoroStates.currentState() === 'pomodoro') {
       pomodoroStates.pause();
       ++pomodorosSoFar;
-      self.emit("pomodoroFinish");
-      options.onPomodoroFinish();
+      self.emit('pomodoroFinish');
     } else {
       pomodoroStates.startPomodoro();
     }
   });
 
-  pomodoroStates.onChange = options.onStateChange;
   this.start = function() {
     pomodoroStates.startPomodoro();
   };
@@ -117,4 +114,7 @@ function PomodoroJS(options) {
 
 util.inherits(PomodoroJS, ee);
 
-module.exports = PomodoroJS;
+module.exports = {
+  PomodoroJS: PomodoroJS,
+  EVENTS: POMODORO_EVENTS
+};
