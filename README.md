@@ -44,7 +44,8 @@ Usage and management
 
 ```bash
 git clone git@github.com:elkorn/pomodorojs.git
-sudo ln -s /path/to/pomodorojs/index.js /usr/local/bin/pomodorojs
+cd pomodorojs && npm install
+ln -s /path/to/pomodorojs/index.js /usr/local/bin/pomodorojs
 
 pomodorojs
 # GET TO WORK!
