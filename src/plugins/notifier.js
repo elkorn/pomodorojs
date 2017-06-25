@@ -1,7 +1,7 @@
 'use strict';
 
-import libnotify from 'libnotify';
-import Plugin from '../util/plugin';
+const libnotify = require('libnotify');
+const Plugin = require('../util/plugin');
 
 
 let notify = (title, message) => {

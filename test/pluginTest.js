@@ -1,22 +1,22 @@
 'use strict';
 
-import Plugin from '../src/util/plugin';
-import sinon from 'sinon';
-import EventEmitter from 'events';
-import util from 'util';
+const Plugin = require('../src/util/plugin');
+const sinon = require('sinon');
+const EventEmitter = require('events');
+const util = require('util');
 
 import events from 'events';
 
 describe('Plugin', () => {
   it('SHOULD accept handlers for Pomodoro events', () => {
-    let handlers = {
+    const handlers = {
       pomodoroStart: sinon.spy(),
       pomodoroFinish: sinon.spy(),
       pomodoroTick: sinon.spy(),
       shouldNotBeIncluded: sinon.spy()
     };
 
-    let plugin = new Plugin(handlers);
+    const plugin = new Plugin(handlers);
 
     plugin.handlers.should.have.property('pomodoroStart', handlers.pomodoroStart);
     plugin.handlers.should.have.property('pomodoroFinish', handlers.pomodoroFinish);
@@ -25,13 +25,13 @@ describe('Plugin', () => {
   });
 
   it('SHOULD attach handlers to correct events', () => {
-    let handlers = {
+    const handlers = {
       pomodoroStart: sinon.spy(),
       pomodoroFinish: sinon.spy(),
       pomodoroTick: sinon.spy()
     };
-    let plugin = new Plugin(handlers);
-    let pomodoro = new EventEmitter();
+    const plugin = new Plugin(handlers);
+    const pomodoro = new EventEmitter();
 
     plugin.apply(pomodoro);
 

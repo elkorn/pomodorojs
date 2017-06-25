@@ -1,7 +1,7 @@
 'use strict';
 
-import R from 'ramda';
-import events from '../util/pick-for-events';
+const R = require('ramda');
+const events =require( '../util/pick-for-events');
 
 class Plugin {
   constructor(handlers) {
@@ -17,5 +17,4 @@ class Plugin {
 }
 
 
-export
-default Plugin;
+module.exports = Plugin;

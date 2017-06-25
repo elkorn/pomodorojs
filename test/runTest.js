@@ -1,13 +1,13 @@
 'use strict';
 
-import run from '../src/util/run.js';
-import thunk from '../src/util/thunk.js';
+const run = require('../src/util/run.js');
+const thunk = require('../src/util/thunk.js');
 
 describe('Run', () => {
-  let randomTime = () => Math.random() * 10;
+  const randomTime = () => Math.random() * 10;
 
   it('SHOULD run thunk generators', (done) => {
-    let delayReturn = (arr, callback) => {
+    const delayReturn = (arr, callback) => {
       for (let val of arr) {
         setTimeout(() => {
           callback(null, val);
@@ -16,12 +16,12 @@ describe('Run', () => {
     };
 
 
-    let th = thunk(delayReturn);
-    let arr = [1, 2, 3, 4, 5];
+    const th = thunk(delayReturn);
+    const arr = [1, 2, 3, 4, 5];
     var x = 0;
 
     run(function * () {
-      let result = yield th(arr);
+      const result = yield th(arr);
       arr.indexOf(result).should.not.equal(-1);
       done();
     });

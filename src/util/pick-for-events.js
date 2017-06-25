@@ -1,6 +1,6 @@
 'use strict';
 
-import pomodoro from '../pomodoro';
+const pomodoro = require('../pomodoro');
 import R from 'ramda';
 
 module.exports = {

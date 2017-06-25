@@ -1,19 +1,20 @@
 'use strict';
 
-import PomodoroJS from './pomodoro';
+const PomodoroJS =  require('./pomodoro');
 
-var state = require('./state');
-var pr = require('./purple-remote');
-var notifier = require('./notifier');
-var format = require('util').format;
-var sound = require('./sound');
-var stats = require('./stats');
-var signals = require('./signals');
+const state = require('./state');
+const pr = require('./purple-remote');
+const notifier = require('./notifier');
+const format = require('util').format;
+const sound = require('./sound');
+const stats = require('./stats');
+const signals = require('./signals');
 
 state.resetTime();
-var t = new PomodoroJS();
-var shouldBeWaiting = false;
-var timeout;
+
+const t = new PomodoroJS();
+const shouldBeWaiting = false;
+let timeout;
 
 function wait() {
   if (shouldBeWaiting) {
