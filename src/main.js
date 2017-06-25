@@ -6,13 +6,14 @@ const StatePlugin = require('./plugins/state');
 // const pr = require('./purple-remote');
 const NotifierPlugin = require('./plugins/notifier');
 const format = require('util').format;
-// const sound = require('./sound');
+const SoundPlugin = require('./plugins/sound');
 // const stats = require('./stats');
 const signals = require('./plugins/signals');
 
 const plugins = [
   new StatePlugin(),
   new NotifierPlugin(),
+  new SoundPlugin(),
 ];
 
 const pomodoro = new PomodoroJS();

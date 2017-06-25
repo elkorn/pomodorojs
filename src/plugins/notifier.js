@@ -6,7 +6,7 @@ const { EVENTS } = require('../pomodoro');
 
 let notify = (message = '', title = 'PomodoroJS') => {
   libnotify.notify(message, {
-    title: title
+    title,
   });
 };
 
