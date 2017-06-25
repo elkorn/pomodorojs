@@ -2,7 +2,7 @@
 
 const app = require("./src/main");
 const args = require("minimist")(process.argv.slice(2));
-const stats = require("./src/stats");
+const stats = require("./src/plugins/stats");
 const timespan = require("timespan");
 const argNames = Object.keys(args).filter(function(argName) { return argName !== "_"; });
 const noArgs = argNames.length === 0; // Only the `_` arg is present.

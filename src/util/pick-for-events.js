@@ -1,11 +1,11 @@
 'use strict';
 
 const pomodoro = require('../pomodoro');
-import R from 'ramda';
+const R = require('ramda');
+
+const keys = R.keys(pomodoro.EVENTS);
 
 module.exports = {
-  pick: R.partial(
-    R.pick,
-    pomodoro.EVENTS),
-  forEach: R.curry(R.flip(R.forEach))(pomodoro.EVENTS)
+  pick: R.partial(R.pick, keys),
+  forEach: R.curry(R.flip(R.forEach))(keys)
 };

@@ -1,18 +1,22 @@
 'use strict';
 
-const PomodoroJS =  require('./pomodoro');
+const { PomodoroJS, EVENTS } =  require('./pomodoro');
 
-const state = require('./state');
-const pr = require('./purple-remote');
-const notifier = require('./notifier');
+const StatePlugin = require('./plugins/state');
+// const pr = require('./purple-remote');
+const NotifierPlugin = require('./plugins/notifier');
 const format = require('util').format;
-const sound = require('./sound');
-const stats = require('./stats');
-const signals = require('./signals');
+// const sound = require('./sound');
+// const stats = require('./stats');
+const signals = require('./plugins/signals');
 
-state.resetTime();
+const plugins = [
+  new StatePlugin(),
+  new NotifierPlugin(),
+];
 
-const t = new PomodoroJS();
+const pomodoro = new PomodoroJS();
+
 const shouldBeWaiting = false;
 let timeout;
 
@@ -25,46 +29,60 @@ function wait() {
 }
 
 function exitGracefully() {
-  pr.restoreStatus();
-  state.resetTime();
+  pomodoro.reset();
   process.exit(0);
 }
 
 signals.onInterrupt(exitGracefully);
 signals.onTerminate(exitGracefully);
 
+plugins.forEach(plugin => plugin.attach(pomodoro));
+pomodoro.reset();
+// pomodoro.on(EVENTS.pomodoroStart, function() {
+//   // notifier.notify('Get to work!');
+//   // pr.changeStatus({
+//   //   status: 'unavailable',
+//   //   message: 'Pomodoro'
+//   // });
+//   // sound.play();
+// });
+
+pomodoro.on(EVENTS.pomodoroBreak, function() {
+  // state.recordPomodoro();
+  // notifier.notify('Finished! Have a break!');
+  // pr.restoreStatus();
+  // sound.play();
+
+  // shouldBeWaiting = false;
+  // pomodoro.continue();
+  // stats.getTagsForPomodoro(function() {
+  //   shouldBeWaiting = false;
+  //   t.
+  //     continue();
+  // });
+
+  // wait();
+});
+
+pomodoro.on(EVENTS.pomodoroBigBreak, () => {
+  // state.recordPomodoro();
+  // notifier.notify('Finished! Have a long break!');
+  // pr.restoreStatus();
+  // sound.play();
+  // stats.getTagsForPomodoro(function() {
+  //   shouldBeWaiting = false;
+  // });
+
+  // pomodoro.continue();
+  // wait();
+});
+
+
+// pomodoro.on(EVENTS.pomodoroTick, function(data) {
+//   state.recordTime(data.time);
+// });
+
 exports.start = function() {
 
-  t.on('pomodoroTick', function(data) {
-    state.recordTime(data.time);
-  });
-
-  t.on('pomodoroStart', function() {
-    notifier.notify('Get to work!');
-    pr.changeStatus({
-      status: 'unavailable',
-      message: 'Pomodoro'
-    });
-    sound.play();
-  });
-
-  t.on('pomodoroFinish', function() {
-    state.recordPomodoro();
-    notifier.notify(
-      format(
-        'Finished! Have a %sbreak!',
-        t.shouldGoForALongBreak() ? 'long ' : ''));
-    pr.restoreStatus();
-    sound.play();
-    stats.getTagsForPomodoro(function() {
-      shouldBeWaiting = false;
-      t.
-        continue();
-    });
-
-    wait();
-  });
-
-  t.start();
-
+  pomodoro.start();
 };

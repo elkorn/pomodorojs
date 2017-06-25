@@ -1,26 +1,33 @@
 'use strict';
 
-var fs = require('fs');
-var format = require('util').format;
-var statefile = require('path').resolve(__dirname, '../statefile');
-var zpad = require('zpad');
-zpad.amount(2);
+const fs = require('fs');
+const format = require('util').format;
+const path = require('path');
+const zpad = require('zpad');
+const Plugin = require('../util/plugin');
+const { EVENTS } = require('../pomodoro');
 
-if (!fs.existsSync(statefile)) {
-  fs.writeFileSync(statefile);
-}
+zpad.amount(2);
 
 function toMinuteDisplay(msec) {
   if (isNaN(msec)) {
     return '--:--';
   }
 
-  var d = new Date(msec);
+  const d = new Date(msec);
   return format('%s:%s', zpad(d.getMinutes()), zpad(d.getSeconds()));
 }
 
 function unmarshalState(state) {
-  var data = state.split('|');
+  if (!state) {
+    return {
+      state: 'pomodoro',
+      number: 0,
+      timeLeft: '',
+    };
+  }
+
+  const data = state.split('|');
   return {
     state: data[0] || 'pomodoro',
     number: parseInt(data[1]) || 0,
@@ -32,63 +39,54 @@ function marshalState(state) {
   return format('%s|%s|%s', state.state, state.number, toMinuteDisplay(state.timeLeft || 0));
 }
 
-module.exports = {
-  recordPomodoro: function() {
-    var state = fs.readFileSync(statefile, {
-      encoding: 'utf8'
-    });
+const modifyState = (stateModification) => (stateFilePath) => (...args) => {
+  const state = fs.readFileSync(stateFilePath, {
+    encoding: 'utf8'
+  }).trim();
 
-    if (state.length) {
-      var stateInfo = unmarshalState(state);
-      fs.writeFileSync(statefile, marshalState({
-        state: stateInfo.state,
-        number: stateInfo.number + 1
-      }));
-    } else {
-      fs.writeFileSync(statefile, marshalState({
-        state: 'pomodoro',
-        number: 1
-      }));
-    }
-  },
+  const stateInfo = unmarshalState(state);
+  fs.writeFileSync(stateFilePath, marshalState(stateModification(stateInfo, ...args)));
+}
 
-  recordTime: function(msecs) {
-    var state = fs.readFileSync(statefile, {
-      encoding: 'utf8'
-    });
-
-    var stateInfo = unmarshalState(state);
-    fs.writeFileSync(statefile, marshalState({
-      state: stateInfo.state,
-      number: stateInfo.number,
-      timeLeft: msecs
-    }));
-  },
-
-  zeroTime: function() {
-    var state = fs.readFileSync(statefile, {
-      encoding: 'utf8'
-    });
-
-    var stateInfo = unmarshalState(state);
-    fs.writeFileSync(statefile, marshalState({
-      state: stateInfo.state,
-      number: stateInfo.number,
-      timeLeft: 0
-    }));
-  },
-
-  resetTime: function() {
-    var state = fs.readFileSync(statefile, {
-      encoding: 'utf8'
-    });
-
-    var stateInfo = unmarshalState(state);
-    fs.writeFileSync(statefile, marshalState({
-      state: stateInfo.state,
-      number: stateInfo.number,
-      timeLeft: '--'
-    }));
+const recordPomodoro = modifyState(stateInfo => {
+  if (stateInfo === null) {
+    return {
+      state: 'pomodoro',
+      number: 1
+    };
   }
 
+  return {
+    state: stateInfo.state,
+    number: stateInfo.number + 1
+  };
+});
+
+const resetTime = modifyState(stateInfo => ({
+  state: stateInfo.state,
+  number: stateInfo.number,
+  timeLeft: '--',
+}));
+
+const recordTime = modifyState((stateInfo, { time }) => ({
+  state: stateInfo.state,
+  number: stateInfo.number,
+  timeLeft: time
+}));
+
+module.exports = class StatePlugin extends Plugin {
+  constructor({
+    stateFilePath = path.resolve(process.cwd(), '..', 'statefile'),
+  } = {}) {
+    if (!fs.existsSync(stateFilePath)) {
+      fs.writeFileSync(stateFilePath);
+    }
+
+    super({
+      [EVENTS.pomodoroTick]: recordTime(stateFilePath),
+      [EVENTS.pomodoroBreak]: recordPomodoro(stateFilePath),
+      [EVENTS.pomodoroBigBreak]: recordPomodoro(stateFilePath),
+      [EVENTS.pomodoroReset]: resetTime(stateFilePath),
+    });
+  }
 };
