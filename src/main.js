@@ -18,17 +18,6 @@ const plugins = [
 
 const pomodoro = new PomodoroJS();
 
-const shouldBeWaiting = false;
-let timeout;
-
-function wait() {
-  if (shouldBeWaiting) {
-    timeout = setTimeout(wait, 100);
-  } else {
-    clearTimeout(timeout);
-  }
-}
-
 function exitGracefully() {
   pomodoro.reset();
   process.exit(0);

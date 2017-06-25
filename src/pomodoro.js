@@ -20,11 +20,10 @@ util.inherits(TimeUp, EventEmitter);
 
 const timeUp = new TimeUp();
 
-// TODO customizable.
 const durations = {
-  'pomodoro': timespan.fromSeconds(2).msecs,
-  'break': timespan.fromSeconds(2).msecs,
-  'bigBreak': timespan.fromSeconds(2).msecs
+  pomodoro: timespan.fromMinutes(25).msecs,
+  break: timespan.fromMinutes(5).msecs,
+  bigBreak: timespan.fromMinutes(15).msecs
 };
 
 const sm = require('state-machine');
