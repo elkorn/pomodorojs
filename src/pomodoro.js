@@ -1,119 +1,141 @@
-var timespan = require("timespan");
-var aSecond = timespan.fromSeconds(1).msecs;
-var ee = require("events").EventEmitter;
-var util = require("util");
+'use strict';
+
+const mirrorkey = require('mirrorkey');
+const timespan = require('timespan');
+const aSecond = timespan.fromSeconds(1).msecs;
+const EventEmitter = require('events').EventEmitter;
+const util = require('util');
+
+const EVENTS = mirrorkey([
+  'pomodoroStart',
+  'pomodoroBreak',
+  'pomodoroBigBreak',
+  'pomodoroTick',
+  'pomodoroReset'
+]);
 
 function TimeUp() {}
 
-util.inherits(TimeUp, ee);
+util.inherits(TimeUp, EventEmitter);
 
-var timeUp = new TimeUp();
+const timeUp = new TimeUp();
 
-var durations = {
-    "pomodoro": timespan.fromMinutes(25).msecs,
-    "break": timespan.fromMinutes(5).msecs,
-    "bigBreak": timespan.fromMinutes(15).msecs
+const durations = {
+  pomodoro: timespan.fromMinutes(25).msecs,
+  break: timespan.fromMinutes(5).msecs,
+  bigBreak: timespan.fromMinutes(15).msecs
 };
 
-var sm = require("state-machine");
+const sm = require('state-machine');
 
-function noop() {}
+function PomodoroJS() {
+  const self = this;
+  let pomodorosSoFar = 0;
+  let currentTime;
+  let timeout;
+  const emitter = new EventEmitter();
+  let handlersInProgress = [];
 
-function PomodoroJS(options) {
-    var self = this;
-    var pomodorosSoFar = 0;
-    var currentTime;
-    var timeout;
+  function progressTime() {
+    if (currentTime === 0) {
+      timeUp.emit('timeUp');
+    } else {
+      currentTime -= aSecond;
+      emitter.emit(EVENTS.pomodoroTick, {
+        time: currentTime
+      });
 
-    function progressTime() {
-        if (currentTime === 0) {
-            timeUp.emit("timeUp");
-        } else {
-            currentTime -= aSecond;
-            self.emit("pomodoroTick", {
-                time: currentTime
-            });
-
-            options.onPomodoroTick(currentTime);
-            timeout = setTimeout(progressTime, aSecond);
-        }
+      timeout = setTimeout(progressTime, aSecond);
     }
+  }
 
-    function startTimer() {
-        clearTimeout(timeout);
-        progressTime();
+  function startTimer() {
+    clearTimeout(timeout);
+    afterHandlersAreDone(progressTime);
+  }
+
+  function emit(e) {
+    emitter.emit(e);
+  }
+
+  function afterHandlersAreDone(fn) {
+    Promise.all(handlersInProgress).then(() => {
+      handlersInProgress = [];
+      fn();
+    });
+  }
+
+  function moveOn () {
+    if (pomodorosSoFar % 4 === 0) {
+      pomodoroStates.goForABigBreak();
+      pomodorosSoFar %= 4;
+    } else {
+      pomodoroStates.goForABreak();
     }
+  };
 
-    options = options || {};
-
-    var pomodoroStates = sm(function() {
-        this.state("break", {
-            initial: true,
-            enter: function() {
-                currentTime = durations["break"];
-                startTimer();
-            }
-        })
-            .state("bigBreak", {
-                enter: function() {
-                    currentTime = durations.bigBreak;
-                    startTimer();
-                }
-            })
-            .state("pomodoro", {
-                enter: function() {
-                    self.emit("pomodoroStart");
-                    options.onPomodoroStart();
-                    currentTime = durations.pomodoro;
-                    startTimer();
-                }
-            })
-            .state("paused")
-            .event("startPomodoro", ["break", "bigBreak"], "pomodoro")    
-            .event("goForABreak", "paused", "break")
-            .event("goForABigBreak", "paused", "bigBreak")
-            .event("pause", "pomodoro", "paused");
-    });
-
-    options.onPomodoroStart = options.onPomodoroStart || noop;
-    options.onPomodoroFinish = options.onPomodoroFinish || noop;
-    options.onPomodoroTick = options.onPomodoroTick || noop;
-    options.onStateChange = options.onStateChange || noop;
-
-    timeUp.on("timeUp", function() {
-        if (pomodoroStates.currentState() === "pomodoro") {
-            pomodoroStates.pause();
-            ++pomodorosSoFar;
-            self.emit("pomodoroFinish");
-            options.onPomodoroFinish();
-        } else {
-            pomodoroStates.startPomodoro();
+  const pomodoroStates = sm(function() {
+    this.state('break', {
+      initial: true,
+      enter: function() {
+        emit(EVENTS.pomodoroBreak);
+        currentTime = durations.break;
+        startTimer();
+      }
+    })
+      .state('bigBreak', {
+        enter: function() {
+          emit(EVENTS.pomodoroBigBreak);
+          currentTime = durations.bigBreak;
+          startTimer();
         }
-    });
-
-    pomodoroStates.onChange = options.onStateChange;
-    this.start = function() {
-        pomodoroStates.startPomodoro();
-    };
-
-    this.currentState = function() {
-        return pomodoroStates.currentState();
-    };
-
-    this.continue = function () {
-        if (pomodorosSoFar % 4 === 0) {
-            pomodoroStates.goForABigBreak();
-            pomodorosSoFar %= 4;
-        } else {
-            pomodoroStates.goForABreak();
+      })
+      .state('pomodoro', {
+        enter: function() {
+          emit(EVENTS.pomodoroStart);
+          currentTime = durations.pomodoro;
+          startTimer();
         }
-    };
+      })
+      .state('paused')
+      .event('startPomodoro', ['break', 'bigBreak'], 'pomodoro')
+      .event('goForABreak', 'paused', 'break')
+      .event('goForABigBreak', 'paused', 'bigBreak')
+      .event('pause', 'pomodoro', 'paused');
+  });
 
-    this.shouldGoForALongBreak = function () {
-        return pomodorosSoFar % 4 === 0;
-    };
+  timeUp.on('timeUp', function() {
+    if (pomodoroStates.currentState() === 'pomodoro') {
+      pomodoroStates.pause();
+      ++pomodorosSoFar;
+      moveOn();
+    } else {
+      pomodoroStates.startPomodoro();
+    }
+  });
+
+  this.start = function() {
+    pomodoroStates.startPomodoro();
+  };
+
+  this.currentState = function() {
+    return pomodoroStates.currentState();
+  };
+
+  this.reset = function() {
+    emit(EVENTS.pomodoroReset);
+  };
+
+  this.on = (e, handler) => {
+    emitter.on(e, (...args) => {
+      handlersInProgress.push(Promise.resolve().then(() => handler(...args)));
+    });
+  };
+
+  this.removeListener = emitter.removeListener.bind(emitter);
 }
 
-util.inherits(PomodoroJS, ee);
-
-module.exports = PomodoroJS;
+module.exports = {
+  PomodoroJS,
+  EVENTS,
+};

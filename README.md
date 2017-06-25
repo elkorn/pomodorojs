@@ -1,5 +1,6 @@
 pomodorojs
 ===
+[![Build Status](https://drone.io/github.com/elkorn/pomodorojs/status.png)](https://drone.io/github.com/elkorn/pomodorojs/latest)
 
 Track your pomodoros from the command line, witout any hassle.
 
@@ -43,7 +44,8 @@ Usage and management
 
 ```bash
 git clone git@github.com:elkorn/pomodorojs.git
-sudo ln -s /path/to/pomodorojs/index.js /usr/local/bin/pomodorojs
+cd pomodorojs && npm install
+ln -s /path/to/pomodorojs/index.js /usr/local/bin/pomodorojs
 
 pomodorojs
 # GET TO WORK!

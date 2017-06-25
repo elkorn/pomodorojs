@@ -1,7 +1,8 @@
 node_modules
-test/*
 *.swp
 statsfile
 statefile
 .tempfile
+.tern-port
 *.bak
+TODOs.org

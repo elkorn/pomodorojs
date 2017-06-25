@@ -8,15 +8,22 @@
   "dependencies": {
     "libnotify": "^1.0.4",
     "minimist": "^0.1.0",
+    "mirrorkey": "^1.2.0",
+    "ramda": "^0.15.0",
     "state-machine": "0.0.3",
     "timespan": "^2.3.0",
     "zpad": "^0.5.0"
   },
   "devDependencies": {
-    "gulp": "^3.6.2",
-    "gulp-grep-stream": "0.0.2",
-    "gulp-mocha": "^0.4.1",
-    "gulp-watch": "^0.6.5",
-    "should": "^3.3.2"
+    "babel": "^5.5.8",
+    "mocha": "^2.2.5",
+    "npm-bump": "0.0.13",
+    "run-sequence": "^1.1.0",
+    "should": "^3.3.2",
+    "sinon": "^1.15.3"
+  },
+  "scripts": {
+    "test": "mocha --compilers js:babel/register",
+    "watch:test": "npm test -- -w"
   }
 }
