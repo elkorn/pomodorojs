@@ -8,7 +8,7 @@ const NotifierPlugin = require('./plugins/notifier');
 const format = require('util').format;
 const SoundPlugin = require('./plugins/sound');
 // const stats = require('./stats');
-const signals = require('./plugins/signals');
+const signals = require('./signals');
 
 const plugins = [
   new StatePlugin(),
