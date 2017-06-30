@@ -16,14 +16,19 @@
   },
   "devDependencies": {
     "babel": "^5.5.8",
+    "coveralls": "^2.13.1",
     "mocha": "^2.2.5",
     "npm-bump": "0.0.13",
+    "nyc": "^11.0.3",
     "run-sequence": "^1.1.0",
     "should": "^3.3.2",
     "sinon": "^1.15.3"
   },
   "scripts": {
-    "test": "mocha --compilers js:babel/register",
-    "watch:test": "npm test -- -w"
+    "cover": "nyc --reporter=text yarn test",
+    "mocha": "mocha --compilers js:babel/register",
+    "test": "yarn mocha",
+    "watch:test": "yarn mocha",
+    "ci:cover": "nyc report --reporter=text-lcov | coveralls",
   }
 }
