@@ -26,9 +26,8 @@
   },
   "scripts": {
     "cover": "nyc --reporter=text yarn test",
-    "mocha": "mocha --compilers js:babel/register",
-    "test": "yarn mocha",
-    "watch:test": "yarn mocha",
+    "test": "mocha --compilers js:babel/register",
+    "watch:test": "yarn test -- --watch",
     "ci:cover": "nyc report --reporter=text-lcov | coveralls"
   }
 }
