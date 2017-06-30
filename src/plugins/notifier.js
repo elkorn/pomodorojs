@@ -1,8 +1,5 @@
-
-
 const libnotify = require('libnotify');
-const Plugin = require('../util/plugin');
-const { EVENTS } = require('../core');
+const { Plugin, EVENTS } = require('pomodorojs-core');
 
 const defaultNotifier = {
   notify: (message = '', title = 'PomodoroJS') => {
@@ -18,7 +15,7 @@ const defaultMessages = {
   [EVENTS.pomodoroBigBreak]: 'Finished! Have a long break!',
 };
 
-module.exports = class Notifier extends Plugin {
+class Notifier extends Plugin {
   constructor(messages = defaultMessages, notifier = defaultNotifier) {
     const notifyOn = (eventName) => {
       const result = {};
@@ -35,4 +32,6 @@ module.exports = class Notifier extends Plugin {
       notifyOn(EVENTS.pomodoroBigBreak)
     ));
   }
-};
+}
+
+module.exports = Notifier;

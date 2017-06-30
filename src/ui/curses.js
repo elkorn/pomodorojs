@@ -3,7 +3,7 @@ const spawn = require('child_process').spawn;
 const format = require('util').format;
 const fs = require('fs');
 
-const UI = require('./base');
+const { UI } = require('pomodorojs-core');
 
 const tempfile = path.resolve(__dirname, '../.tempfile');
 const INPUT_BOX_PARAMS = ['-e', format('dialog --inputbox \'Tags for pomodoro:\' 8 40 2> %s', tempfile)];

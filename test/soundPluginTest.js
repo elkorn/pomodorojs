@@ -4,7 +4,7 @@ const sinon = require('sinon');
 const EventEmitter = require('events');
 const util = require('util');
 
-const { EVENTS } = require('../src/core');
+const { EVENTS } = require('pomodorojs-core');
 const SoundPlugin = require('../src/plugins/sound');
 
 describe('Sound plugin', () => {

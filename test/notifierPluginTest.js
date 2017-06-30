@@ -1,10 +1,11 @@
 'use strict';
 
-const NotifierPlugin = require('../src/plugins/notifier');
+const { EVENTS } = require('pomodorojs-core');
 const sinon = require('sinon');
 const EventEmitter = require('events');
 const util = require('util');
-const { EVENTS } = require('../src/core');
+
+const NotifierPlugin = require('../src/plugins/notifier');
 
 const events = require('events');
 
