@@ -20,15 +20,15 @@ util.inherits(TimeUp, EventEmitter);
 
 const timeUp = new TimeUp();
 
-const durations = {
-  pomodoro: timespan.fromMinutes(25).msecs,
-  break: timespan.fromMinutes(5).msecs,
-  bigBreak: timespan.fromMinutes(15).msecs
+const defaultDurations = {
+  pomodoro: timespan.fromMinutes(25),
+  break: timespan.fromMinutes(5),
+  bigBreak: timespan.fromMinutes(15),
 };
 
 const sm = require('state-machine');
 
-function PomodoroJS() {
+function PomodoroJS({ durations = defaultDurations } = {}) {
   const self = this;
   let pomodorosSoFar = 0;
   let currentTime;
@@ -79,21 +79,21 @@ function PomodoroJS() {
       initial: true,
       enter: function() {
         emit(EVENTS.pomodoroBreak);
-        currentTime = durations.break;
+        currentTime = durations.break.msecs;
         startTimer();
       }
     })
       .state('bigBreak', {
         enter: function() {
           emit(EVENTS.pomodoroBigBreak);
-          currentTime = durations.bigBreak;
+          currentTime = durations.bigBreak.msecs;
           startTimer();
         }
       })
       .state('pomodoro', {
         enter: function() {
           emit(EVENTS.pomodoroStart);
-          currentTime = durations.pomodoro;
+          currentTime = durations.pomodoro.msecs;
           startTimer();
         }
       })

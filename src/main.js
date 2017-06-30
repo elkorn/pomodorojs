@@ -1,22 +1,28 @@
-'use strict';
+const timespan = require('timespan');
+const format = require('util').format;
 
 const { PomodoroJS, EVENTS } =  require('./pomodoro');
-
 const StatePlugin = require('./plugins/state');
-// const pr = require('./purple-remote');
+const StatsPlugin = require('./plugins/stats');
 const NotifierPlugin = require('./plugins/notifier');
-const format = require('util').format;
 const SoundPlugin = require('./plugins/sound');
-// const stats = require('./stats');
 const signals = require('./signals');
+const CursesUI = require('./ui/curses');
+
+const durations = {
+  pomodoro: timespan.fromSeconds(2),
+  break: timespan.fromSeconds(2),
+  bigBreak: timespan.fromSeconds(2),
+};
 
 const plugins = [
   new StatePlugin(),
   new NotifierPlugin(),
   new SoundPlugin(),
+  new StatsPlugin({ ui: new CursesUI() }),
 ];
 
-const pomodoro = new PomodoroJS();
+const pomodoro = new PomodoroJS({ durations });
 
 function exitGracefully() {
   pomodoro.reset();
