@@ -8,3 +8,4 @@ statefile
 TODOs.org
 .nyc_output
 coverage
+npm-debug.log
