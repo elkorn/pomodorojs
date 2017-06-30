@@ -11,7 +11,7 @@ process.title = "pomodorojs";
 
 function showPomodorosForDate(date) {
     showPomodorosForCriteria({
-        date: date
+       date: date
     });
 }
 

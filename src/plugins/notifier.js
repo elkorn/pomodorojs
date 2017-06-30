@@ -30,10 +30,10 @@ module.exports = class Notifier extends Plugin {
       return result;
     };
 
-    super({
-      ...notifyOn(EVENTS.pomodoroStart),
-      ...notifyOn(EVENTS.pomodoroBreak),
-      ...notifyOn(EVENTS.pomodoroBigBreak),
-    });
+    super(Object.assign({},
+      notifyOn(EVENTS.pomodoroStart),
+      notifyOn(EVENTS.pomodoroBreak),
+      notifyOn(EVENTS.pomodoroBigBreak)
+    ));
   }
 };
