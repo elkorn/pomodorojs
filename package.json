@@ -9,7 +9,7 @@
     "libnotify": "^1.0.4",
     "minimist": "^0.1.0",
     "mirrorkey": "^1.2.0",
-    "pomodorojs-core": "^0.6.0",
+    "pomodorojs-core": "^0.6.1",
     "ramda": "^0.15.0",
     "state-machine": "0.0.3",
     "timespan": "^2.3.0",

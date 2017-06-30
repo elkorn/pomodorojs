@@ -2505,9 +2505,9 @@ pluralize@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-1.2.1.tgz#d1a21483fd22bb41e58a12fa3421823140897c45"
 
-pomodorojs-core@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/pomodorojs-core/-/pomodorojs-core-0.6.0.tgz#fe23da53fcf36b9f0276c541725d6e821fcb37b7"
+pomodorojs-core@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/pomodorojs-core/-/pomodorojs-core-0.6.1.tgz#7dbeff909e531b284ea17cba9371509cc963d633"
   dependencies:
     minimist "^0.1.0"
     mirrorkey "^1.2.0"
