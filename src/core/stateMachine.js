@@ -1,6 +1,6 @@
 const sm = require('state-machine');
 
-module.exports = ({ onPomodoro, onBreak, onBigBreak } = {}) => sm(function() {
+module.exports = ({ onPomodoro, onBreak, onBigBreak } = {}) => sm(() => {
   this.state('break', {
     initial: true,
     enter: onBreak,

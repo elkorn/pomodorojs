@@ -1,9 +1,3 @@
-'use strict';
-
-export default function(fn) {
-  return function(...args) {
-    return function(callback) {
-      fn.apply(this, args.concat([callback]));
-    };
-  };
+export default fn => (...args) => (callback) => {
+  fn.apply(this, args.concat([callback]));
 };

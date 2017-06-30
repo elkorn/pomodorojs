@@ -9,8 +9,27 @@ const tempfile = path.resolve(__dirname, '../.tempfile');
 const INPUT_BOX_PARAMS = ['-e', format('dialog --inputbox \'Tags for pomodoro:\' 8 40 2> %s', tempfile)];
 
 const getTempData = () => fs.readFileSync(tempfile, {
-  encoding: 'utf-8'
+  encoding: 'utf-8',
 });
+
+const showTagDialog = () => new Promise((resolve, reject) => {
+  const dialog = spawn('xterm', INPUT_BOX_PARAMS);
+  dialog.on('close', () => {
+    resolve(getTempData());
+  });
+
+  dialog.on('error', reject);
+});
+
+const start = ({ pomodorojs }) => {
+  pomodorojs.reset();
+  pomodorojs.start();
+};
+
+const exit = ({ pomodorojs }) => {
+  pomodorojs.reset();
+};
+
 
 class Curses extends UI {
   constructor() {
@@ -19,26 +38,10 @@ class Curses extends UI {
     if (!fs.existsSync(tempfile)) {
       fs.writeFileSync(tempfile, '');
     }
-  }
 
-  showTagDialog() {
-    return new Promise((resolve, reject) => {
-      const dialog = spawn('xterm', INPUT_BOX_PARAMS);
-      dialog.on('close', (data) => {
-        resolve(getTempData());
-      });
-
-      dialog.on('error', reject);
-    });
-  }
-
-  start({ pomodorojs }) {
-    pomodorojs.reset();
-    pomodorojs.start();
-  }
-
-  exit({ pomodorojs }) {
-    pomodorojs.reset();
+    this.showTagDialog = showTagDialog;
+    this.start = start;
+    this.exit = exit;
   }
 }
 

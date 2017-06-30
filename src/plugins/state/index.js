@@ -1,4 +1,4 @@
-'use strict';
+
 
 const format = require('util').format;
 const zpad = require('zpad');
@@ -29,10 +29,10 @@ function unmarshalState(state) {
   }
 
   const data = state.split('|');
-  if (data.length === 3)  {
+  if (data.length === 3) {
     return {
       state: 'pomodoro', // TODO handle 'break'
-      number: parseInt(data[1]) || initialState.number,
+      number: parseInt(data[1], 10) || initialState.number,
       timeLeft: data[2] || initialState.timeLeft,
     };
   }
@@ -44,17 +44,15 @@ function marshalState(state) {
   return format('%s|%s|%s', state.state, state.number, toMinuteDisplay(state.timeLeft || 0));
 }
 
-const modifyState = (stateModification) => (backend) => (...args) => {
+const modifyState = stateModification => backend => (...args) => {
   const stateInfo = unmarshalState(backend.getState());
   backend.setState(marshalState(stateModification(stateInfo, ...args)));
 };
 
-const recordPomodoro = modifyState(stateInfo => {
-  return {
-    state: stateInfo.state,
-    number: stateInfo.number + 1
-  };
-});
+const recordPomodoro = modifyState(stateInfo => ({
+  state: stateInfo.state,
+  number: stateInfo.number + 1,
+}));
 
 const resetTime = modifyState(stateInfo => ({
   state: stateInfo.state,
@@ -65,12 +63,12 @@ const resetTime = modifyState(stateInfo => ({
 const recordTime = modifyState((stateInfo, { time }) => ({
   state: stateInfo.state,
   number: stateInfo.number,
-  timeLeft: time
+  timeLeft: time,
 }));
 
 module.exports = class StatePlugin extends Plugin {
   constructor({
-    backend = fileStateBackend
+    backend = fileStateBackend,
   } = {}) {
     super({
       [EVENTS.pomodoroTick]: recordTime(backend),

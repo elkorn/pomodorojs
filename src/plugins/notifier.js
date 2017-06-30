@@ -1,4 +1,4 @@
-'use strict';
+
 
 const libnotify = require('libnotify');
 const Plugin = require('../util/plugin');
@@ -9,21 +9,20 @@ const defaultNotifier = {
     libnotify.notify(message, {
       title,
     });
-  }
+  },
 };
 
 const defaultMessages = {
-  [EVENTS.pomodoroStart] : 'Get to work!',
-  [EVENTS.pomodoroBreak] :'Finished! Have a break!',
-  [EVENTS.pomodoroBigBreak] :'Finished! Have a long break!',
-}
+  [EVENTS.pomodoroStart]: 'Get to work!',
+  [EVENTS.pomodoroBreak]: 'Finished! Have a break!',
+  [EVENTS.pomodoroBigBreak]: 'Finished! Have a long break!',
+};
 
 module.exports = class Notifier extends Plugin {
   constructor(messages = defaultMessages, notifier = defaultNotifier) {
-
     const notifyOn = (eventName) => {
       const result = {};
-      if (EVENTS.hasOwnProperty(eventName) && messages.hasOwnProperty(eventName)) {
+      if (EVENTS[eventName] && messages[eventName]) {
         result[eventName] = () => notifier.notify(messages[eventName]);
       }
 
@@ -33,7 +32,7 @@ module.exports = class Notifier extends Plugin {
     super(Object.assign({},
       notifyOn(EVENTS.pomodoroStart),
       notifyOn(EVENTS.pomodoroBreak),
-      notifyOn(EVENTS.pomodoroBigBreak)
+      notifyOn(EVENTS.pomodoroBigBreak),
     ));
   }
 };

@@ -3,7 +3,7 @@ const events = [
   'pomodoroBreak',
   'pomodoroBigBreak',
   'pomodoroTick',
-  'pomodoroReset'
+  'pomodoroReset',
 ];
 
 module.exports = require('mirrorkey')(events);

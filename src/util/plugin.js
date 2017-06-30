@@ -1,7 +1,4 @@
-'use strict';
-
-const R = require('ramda');
-const events =require( '../util/pick-for-events');
+const events = require('../util/pick-for-events');
 
 class Plugin {
   constructor(handlers = {}) {
@@ -10,8 +7,9 @@ class Plugin {
 
   attach(pomodorojs) {
     events.forEach((e) => {
-      if (this.handlers.hasOwnProperty(e)) {
-        pomodorojs.on(e, this.handlers[e]);
+      const handler = this.handlers[e];
+      if (handler) {
+        pomodorojs.on(e, handler);
       }
     });
 
@@ -20,8 +18,9 @@ class Plugin {
 
   detach(pomodorojs) {
     events.forEach((e) => {
-      if (this.handlers.hasOwnProperty(e)) {
-        pomodorojs.removeListener(e, this.handlers[e]);
+      const handler = this.handlers[e];
+      if (handler) {
+        pomodorojs.removeListener(e, handler);
       }
     });
 

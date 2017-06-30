@@ -10,8 +10,8 @@ module.exports = {
     }
 
     return fs.readFileSync(stateFilePath, {
-      encoding: 'utf8'
+      encoding: 'utf8',
     }).trim();
   },
-  setState: (state) => fs.writeFileSync(stateFilePath, state),
+  setState: state => fs.writeFileSync(stateFilePath, state),
 };

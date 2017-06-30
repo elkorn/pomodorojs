@@ -1,8 +1,6 @@
 // TODO this is the CLI driver.
 
-const format = require('util').format;
-
-const { PomodoroJS, EVENTS } =  require('./core');
+const { PomodoroJS } = require('./core');
 const StatePlugin = require('./plugins/state');
 const StatsPlugin = require('./plugins/stats');
 const NotifierPlugin = require('./plugins/notifier');
@@ -29,6 +27,4 @@ function exitGracefully() {
 signals.onInterrupt(exitGracefully);
 signals.onTerminate(exitGracefully);
 
-exports.start = function() {
-  ui.start({ pomodorojs });
-};
+exports.start = () => ui.start({ pomodorojs });

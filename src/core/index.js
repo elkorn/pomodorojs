@@ -1,6 +1,7 @@
-'use strict';
+const PomodoroJS = require('./pomodoro');
+const EVENTS = require('./events');
 
 module.exports = {
-  PomodoroJS: require('./pomodoro'),
-  EVENTS: require('./events'),
+  PomodoroJS,
+  EVENTS,
 };
