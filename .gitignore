@@ -6,3 +6,4 @@ statefile
 .tern-port
 *.bak
 TODOs.org
+.nyc_output

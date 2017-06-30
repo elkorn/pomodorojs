@@ -1,6 +1,7 @@
 pomodorojs
 ===
 [![Build Status](https://travis-ci.org/elkorn/pomodorojs.svg?branch=master)](https://travis-ci.org/elkorn/pomodorojs.svg?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/elkorn/pomodorojs/badge.svg?branch=master)](https://coveralls.io/github/elkorn/pomodorojs?branch=master)
 
 Track your pomodoros from the command line, witout any hassle.
 
