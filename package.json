@@ -1,6 +1,6 @@
 {
   "name": "pomodorojs",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "description": "Hassle-free time tracking with the pomodoro technique.",
   "main": "index.js",
   "author": "elkorn",
@@ -33,14 +33,11 @@
     "bump": "npm-bump",
     "cover": "nyc --reporter=text yarn test",
     "test": "mocha --compilers js:babel/register",
-
     "lint": "eslint src",
     "lint:fix": "yarn lint -- --fix",
-
     "watch:lint": "esw src --watch --clear",
     "watch:lint:fix": "yarn watch:lint -- --fix",
     "watch:test": "yarn test -- --watch",
-
     "ci:cover": "nyc report --reporter=text-lcov | coveralls",
     "ci:lint": "yarn lint"
   }
