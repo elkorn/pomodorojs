@@ -57,12 +57,13 @@ if (noArgs) {
         criteria.date = new Date();
     }
 
-    const time = args.t || args.time;
-    if (time) {
+    const time = typeof(args.t) === 'undefined' ? args.time : args.t;
+    if (typeof(time) !== 'undefined') {
         if (time === true) {
             criteria.date = new Date();
         } else if (!isNaN(time)) {
-            criteria.date = new Date(new Date().valueOf() + timespan.fromDays(time).msecs);
+            const span = timespan.fromDays(time);
+            criteria.date = new Date(new Date().valueOf() + (span ? span.msecs : 0));
         }
     }
 
