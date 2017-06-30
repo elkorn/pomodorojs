@@ -7,3 +7,4 @@ statefile
 *.bak
 TODOs.org
 .nyc_output
+coverage
