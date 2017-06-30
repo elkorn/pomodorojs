@@ -30,6 +30,7 @@
     "sinon": "^1.15.3"
   },
   "scripts": {
+    "bump": "npm-bump",
     "cover": "nyc --reporter=text yarn test",
     "test": "mocha --compilers js:babel/register",
 
