@@ -1,6 +1,6 @@
 pomodorojs
 ===
-[![Build Status](https://drone.io/github.com/elkorn/pomodorojs/status.png)](https://drone.io/github.com/elkorn/pomodorojs/latest)
+[![Build Status](https://travis-ci.org/elkorn/pomodorojs.svg?branch=master)](https://travis-ci.org/elkorn/pomodorojs.svg?branch=master)
 
 Track your pomodoros from the command line, witout any hassle.
 

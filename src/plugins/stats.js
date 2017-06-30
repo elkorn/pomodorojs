@@ -8,7 +8,6 @@ var statsfile = path.resolve(__dirname, '../statsfile');
 var tempfile = path.resolve(__dirname, '../.tempfile');
 
 var DATA_FORMAT = '%s\t%s\n';
-var INPUT_BOX_PARAMS = ['-e', format('dialog --inputbox \'Tags for pomodoro:\' 8 40 2> %s', tempfile)];
 
 if (!fs.existsSync(statsfile)) {
   fs.writeFileSync(statsfile);
@@ -52,6 +51,7 @@ function showTagDialog(dataCallback) {
 
 module.exports = {
   getTagsForPomodoro: function(callback) {
+    return ui.getTags().then(storeTagInfo)
     showTagDialog(function(data) {
       storeTagInfo(data);
       callback();
