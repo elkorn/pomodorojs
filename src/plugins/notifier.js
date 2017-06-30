@@ -32,7 +32,7 @@ module.exports = class Notifier extends Plugin {
     super(Object.assign({},
       notifyOn(EVENTS.pomodoroStart),
       notifyOn(EVENTS.pomodoroBreak),
-      notifyOn(EVENTS.pomodoroBigBreak),
+      notifyOn(EVENTS.pomodoroBigBreak)
     ));
   }
 };
