@@ -1,6 +1,6 @@
 const Plugin = require('../../util/plugin');
 const statsFileBackend = require('./backend');
-const { EVENTS } = require('../../pomodoro');
+const { EVENTS } = require('../../core');
 
 const askForPomodoroTags = (ui, backend) => ui.showTagDialog().then(backend.storeTagInfo.bind(backend));
 

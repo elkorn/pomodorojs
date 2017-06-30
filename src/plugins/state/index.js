@@ -3,7 +3,7 @@
 const format = require('util').format;
 const zpad = require('zpad');
 const Plugin = require('../../util/plugin');
-const { EVENTS } = require('../../pomodoro');
+const { EVENTS } = require('../../core');
 const fileStateBackend = require('./backend');
 
 zpad.amount(2);

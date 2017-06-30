@@ -4,7 +4,7 @@ const NotifierPlugin = require('../src/plugins/notifier');
 const sinon = require('sinon');
 const EventEmitter = require('events');
 const util = require('util');
-const { EVENTS } = require('../src/pomodoro');
+const { EVENTS } = require('../src/core');
 
 const events = require('events');
 

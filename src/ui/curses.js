@@ -3,18 +3,14 @@ const spawn = require('child_process').spawn;
 const format = require('util').format;
 const fs = require('fs');
 
+const UI = require('./base');
+
 const tempfile = path.resolve(__dirname, '../.tempfile');
 const INPUT_BOX_PARAMS = ['-e', format('dialog --inputbox \'Tags for pomodoro:\' 8 40 2> %s', tempfile)];
 
 const getTempData = () => fs.readFileSync(tempfile, {
   encoding: 'utf-8'
 });
-
-class UI {
-  showTagDialog() {
-    throw new Error('Not implemented.');
-  }
-}
 
 class Curses extends UI {
   constructor() {
@@ -34,6 +30,15 @@ class Curses extends UI {
 
       dialog.on('error', reject);
     });
+  }
+
+  start({ pomodorojs }) {
+    pomodorojs.reset();
+    pomodorojs.start();
+  }
+
+  exit({ pomodorojs }) {
+    pomodorojs.reset();
   }
 }
 

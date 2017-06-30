@@ -2,7 +2,7 @@
 
 const libnotify = require('libnotify');
 const Plugin = require('../util/plugin');
-const { EVENTS } = require('../pomodoro');
+const { EVENTS } = require('../core');
 
 const defaultNotifier = {
   notify: (message = '', title = 'PomodoroJS') => {

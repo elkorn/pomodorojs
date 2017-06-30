@@ -4,7 +4,7 @@ const R = require('ramda');
 const events =require( '../util/pick-for-events');
 
 class Plugin {
-  constructor(handlers) {
+  constructor(handlers = {}) {
     this.handlers = events.pick(handlers);
   }
 

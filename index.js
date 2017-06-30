@@ -39,38 +39,41 @@ function printUsageInfo() {
 
 const SUPPORTED_ARGS = ["a", "all", "today", "time", "n", "numberOnly", "tags", "h", "help"];
 
-if (noArgs) {
+function main() {
+  if (noArgs) {
     app.start();
-} else {
+  } else {
     const criteria = {};
     if (args.a || args.all) {
-        showPomodorosForCriteria(criteria);
-        return;
+      showPomodorosForCriteria(criteria);
     }
 
     if(args.h || args.help) {
-        printUsageInfo();
-        return;
+      printUsageInfo();
+      return;
     }
 
     if (args.today) {
-        criteria.date = new Date();
+      criteria.date = new Date();
     }
 
     const time = typeof(args.t) === 'undefined' ? args.time : args.t;
     if (typeof(time) !== 'undefined') {
-        if (time === true) {
-            criteria.date = new Date();
-        } else if (!isNaN(time)) {
-            const span = timespan.fromDays(time);
-            criteria.date = new Date(new Date().valueOf() + (span ? span.msecs : 0));
-        }
+      if (time === true) {
+        criteria.date = new Date();
+      } else if (!isNaN(time)) {
+        const span = timespan.fromDays(time);
+        criteria.date = new Date(new Date().valueOf() + (span ? span.msecs : 0));
+      }
     }
 
     if (Object.keys(criteria).length) {
-        showPomodorosForCriteria(criteria);
+      showPomodorosForCriteria(criteria);
     } else {
-        const unsupportedArgs = argNames.filter(function(argName) { return SUPPORTED_ARGS.indexOf(argName) === -1; });
-        console.error("Given arguments" + (unsupportedArgs.length ? " (" + unsupportedArgs.join(",") + ")" : "")  + " are not supported. :(");
+      const unsupportedArgs = argNames.filter(function(argName) { return SUPPORTED_ARGS.indexOf(argName) === -1; });
+      console.error("Given arguments" + (unsupportedArgs.length ? " (" + unsupportedArgs.join(",") + ")" : "")  + " are not supported. :(");
     }
-}
+  }
+};
+
+main();
