@@ -68,8 +68,6 @@ const recordTime = modifyState((stateInfo, { time }) => ({
   timeLeft: time
 }));
 
-
-
 module.exports = class StatePlugin extends Plugin {
   constructor({
     backend = fileStateBackend
