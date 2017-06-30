@@ -1,6 +1,5 @@
 'use strict';
 
-const assert = require('assert');
 const sinon = require('sinon');
 const EventEmitter = require('events');
 const util = require('util');
