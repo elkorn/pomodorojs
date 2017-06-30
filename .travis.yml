@@ -4,5 +4,5 @@ node_js:
 cache: yarn
 install:
   - yarn
-script: yarn test
+script: yarn cover
 after_success: yarn ci:cover
