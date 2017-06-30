@@ -29,6 +29,6 @@
     "mocha": "mocha --compilers js:babel/register",
     "test": "yarn mocha",
     "watch:test": "yarn mocha",
-    "ci:cover": "nyc report --reporter=text-lcov | coveralls",
+    "ci:cover": "nyc report --reporter=text-lcov | coveralls"
   }
 }
